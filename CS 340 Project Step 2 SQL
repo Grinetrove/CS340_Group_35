@@ -85,3 +85,68 @@ CREATE TABLE BooksGenresLinked (
     FOREIGN KEY (BookID) REFERENCES Books(BookID),
     FOREIGN KEY (GenreID) REFERENCES Genres(GenreID)
 );
+
+
+
+-- Insert into Members Table
+INSERT INTO Members (Email, Name, Phone, Address, Standing, CurrentFines)
+VALUES
+('john.doe@example.com', 'John Doe', '555-1234', '123 Elm St', 'Good', 0.00),
+('jane.smith@example.com', 'Jane Smith', '555-5678', '456 Maple Ave', 'Fair', 5.50),
+('alice.jones@example.com', 'Alice Jones', '555-8765', '789 Oak Dr', 'Good', 0.00);
+
+-- Insert into Employees Table
+INSERT INTO Employees (Name, Position, Email, Phone)
+VALUES
+('Michael Brown', 'Librarian', 'michael.brown@example.com', '555-4321'),
+('Linda Green', 'Assistant Librarian', 'linda.green@example.com', '555-6789');
+
+-- Insert into Books Table
+INSERT INTO Books (Title, ISBN, YearPublished, Publisher, PageCount, Language, OnHold, CheckedOut)
+VALUES
+('The Great Gatsby', '978-0743273565', 1925, 'Scribner', 180, 'English', FALSE, TRUE),
+('1984', '978-0451524935', 1949, 'Plume', 328, 'English', FALSE, FALSE),
+('To Kill a Mockingbird', '978-0060935467', 1960, 'Harper Perennial', 281, 'English', TRUE, FALSE);
+
+-- Insert into Authors Table
+INSERT INTO Authors (Name, BirthDate, Nationality)
+VALUES
+('F. Scott Fitzgerald', '1896-09-24', 'American'),
+('George Orwell', '1903-06-25', 'British'),
+('Harper Lee', '1926-04-28', 'American');
+
+-- Insert into BooksAuthorsLinked Table
+INSERT INTO BooksAuthorsLinked (BookID, AuthorID)
+VALUES
+((SELECT BookID FROM Books WHERE Title='The Great Gatsby'), (SELECT AuthorID FROM Authors WHERE Name='F. Scott Fitzgerald')),
+((SELECT BookID FROM Books WHERE Title='1984'), (SELECT AuthorID FROM Authors WHERE Name='George Orwell')),
+((SELECT BookID FROM Books WHERE Title='To Kill a Mockingbird'), (SELECT AuthorID FROM Authors WHERE Name='Harper Lee'));
+
+-- Insert into Orders Table
+INSERT INTO Orders (MemberID, EmployeeID, OrderDate)
+VALUES
+((SELECT MemberID FROM Members WHERE Name='John Doe'), (SELECT EmployeeID FROM Employees WHERE Name='Michael Brown'), '2023-01-15'),
+((SELECT MemberID FROM Members WHERE Name='Jane Smith'), (SELECT EmployeeID FROM Employees WHERE Name='Linda Green'), '2023-01-20');
+
+-- Insert into OrderBooksLinked Table
+INSERT INTO OrderBooksLinked (OrderID, BookID, CheckoutDate, DueDate, ReturnedDate, FineIncurred)
+VALUES
+((SELECT OrderID FROM Orders WHERE MemberID=(SELECT MemberID FROM Members WHERE Name='John Doe')), (SELECT BookID FROM Books WHERE Title='The Great Gatsby'), '2023-01-15', '2023-02-15', '2023-02-10', 0.00),
+((SELECT OrderID FROM Orders WHERE MemberID=(SELECT MemberID FROM Members WHERE Name='Jane Smith')), (SELECT BookID FROM Books WHERE Title='1984'), '2023-01-20', '2023-02-20', NULL, 0.00);
+
+-- Insert into Genres Table
+INSERT INTO Genres (GenreID, GenreDescription)
+VALUES
+('FIC', 'Fiction'),
+('DYST', 'Dystopian'),
+('CLAS', 'Classic');
+
+-- Insert into BooksGenresLinked Table
+INSERT INTO BooksGenresLinked (BookID, GenreID)
+VALUES
+((SELECT BookID FROM Books WHERE Title='The Great Gatsby'), 'CLAS'),
+((SELECT BookID FROM Books WHERE Title='1984'), 'DYST'),
+((SELECT BookID FROM Books WHERE Title='To Kill a Mockingbird'), 'FIC');
+
+
+
