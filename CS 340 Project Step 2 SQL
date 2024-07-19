@@ -1,0 +1,87 @@
+-- Members Table
+CREATE TABLE Members (
+    MemberID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    Email VARCHAR(255) NOT NULL,
+    Name VARCHAR(255) NOT NULL,
+    Phone VARCHAR(20),
+    Address VARCHAR(255),
+    Standing VARCHAR(50),
+    CurrentFines DECIMAL(10, 2)
+);
+
+-- Employees Table
+CREATE TABLE Employees (
+    EmployeeID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    Position VARCHAR(50) NOT NULL,
+    Email VARCHAR(255) NOT NULL,
+    Phone VARCHAR(20)
+);
+
+-- Books Table
+CREATE TABLE Books (
+    BookID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    ISBN VARCHAR(20) NOT NULL,
+    YearPublished INT NOT NULL,
+    Publisher VARCHAR(255) NOT NULL,
+    PageCount INT NOT NULL,
+    Language VARCHAR(50) NOT NULL,
+    OnHold BOOLEAN NOT NULL,
+    CheckedOut BOOLEAN NOT NULL
+);
+
+-- Authors Table
+CREATE TABLE Authors(
+    AuthorID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    BirthDate DATE,
+    Nationality VARCHAR(50)
+);
+
+-- BooksAuthorsLinked Table
+CREATE TABLE BooksAuthorsLinked (
+    BooksAuthorID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    BookID INT NOT NULL,
+    AuthorID INT NOT NULL,
+    FOREIGN KEY (BookID) REFERENCES Books(BookID),
+    FOREIGN KEY (AuthorID) REFERENCES Authors(AuthorID)
+);
+
+-- Orders Table
+CREATE TABLE Orders (
+    OrderID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    MemberID INT NOT NULL,
+    EmployeeID INT NOT NULL,
+    OrderDate DATE NOT NULL,
+    FOREIGN KEY (MemberID) REFERENCES Members(MemberID),
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+);
+
+-- OrderBooksLinked Table
+CREATE TABLE OrderBooksLinked (
+    OrderBooksID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    OrderID INT NOT NULL,
+    BookID INT NOT NULL,
+    CheckoutDate DATE,
+    DueDate DATE NOT NULL,
+    ReturnedDate DATE,
+    FineIncurred DECIMAL(10, 2),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (BookID) REFERENCES Books(BookID)
+);
+
+-- Genres Table
+CREATE TABLE Genres (
+    GenreID VARCHAR(50) NOT NULL PRIMARY KEY,
+    GenreDescription VARCHAR(255)
+);
+
+-- BooksGenresLinked Table
+CREATE TABLE BooksGenresLinked (
+    BooksGenreID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    BookID INT NOT NULL,
+    GenreID VARCHAR(50) NOT NULL,
+    FOREIGN KEY (BookID) REFERENCES Books(BookID),
+    FOREIGN KEY (GenreID) REFERENCES Genres(GenreID)
+);
