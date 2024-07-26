@@ -1,1 +1,101 @@
+--Member Queries--
+--view all members--
+SELECT MemberID, Email, Name, Phone, Address, Standing, CurrentFines
+FROM Members;
+--insert a member--
+INSERT INTO Members (Email, Name, Phone, Address, Standing, CurrentFines)
+VALUES (':email', ':name', ':phone', ':address', 'Good standing', 0.00);
+--delete a member--
+DELETE FROM Members
+WHERE MemberID = :memberID AND CurrentFines = 0.00;
+--update a member--
+UPDATE Members
+SET Email = ':email', Name = ':name', Phone = ':phone', Address = ':address', Standing = ':standing', CurrentFines = :currentFines
+WHERE MemberID = :memberID;
 
+
+--Books Queries--
+--view all books--
+SELECT BookID, Title, ISBN, YearPublished, Publisher, PageCount, Language, OnHold, CheckedOut
+FROM Books;
+--insert a book--
+INSERT INTO Books (Title, ISBN, YearPublished, Publisher, PageCount, Language, OnHold, CheckedOut)
+VALUES (':title', ':isbn', :yearPublished, ':publisher', :pageCount, ':language', FALSE, FALSE);
+--delete a book--
+DELETE FROM Books
+WHERE BookID = :bookID AND CheckedOut = FALSE AND OnHold = FALSE;
+--update a book--
+UPDATE Books
+SET Title = ':title', ISBN = ':isbn', YearPublished = :yearPublished, 
+    Publisher = ':publisher', PageCount = :pageCount, Language = ':language'
+WHERE BookID = :bookID;
+
+
+--Authors Queries--
+--view all authors--
+SELECT AuthorID, Name, BirthDate, Nationality
+FROM Authors;
+--insert an author--
+INSERT INTO Authors (Name, BirthDate, Nationality)
+VALUES (':name', ':birthDate', ':nationality');
+--delete an author--
+DELETE FROM Authors
+WHERE AuthorID = :authorID;
+--update an author--
+UPDATE Authors
+SET Name = ':name', BirthDate = ':birthDate', Nationality = ':nationality'
+WHERE AuthorID = :authorID;
+
+
+
+--Order Queries
+--view all orders--
+SELECT Orders.OrderID, Members.Name AS MemberName, Employees.Name AS EmployeeName, Orders.OrderDate
+FROM Orders
+INNER JOIN Members ON Orders.MemberID = Members.MemberID
+INNER JOIN Employees ON Orders.EmployeeID = Employees.EmployeeID;
+--insert an order--
+INSERT INTO Orders (MemberID, EmployeeID, OrderDate)
+VALUES (:memberID, :employeeID, CURDATE());
+--delete an order--
+DELETE FROM Orders
+WHERE OrderID = :orderID AND NOT EXISTS (
+    SELECT 1 FROM OrderBooksLinked WHERE OrderID = :orderID AND ReturnedDate IS NULL
+);
+--update an order--
+UPDATE Orders
+SET MemberID = :newMemberID, EmployeeID = :newEmployeeID, OrderDate = ':newOrderDate'
+WHERE OrderID = :orderID;
+
+
+
+--Employee Queries--
+--view all employees--
+SELECT EmployeeID, Name, Position, Email, Phone
+FROM Employees;
+--insert an employee--
+INSERT INTO Employees (Name, Position, Email, Phone)
+VALUES (':name', ':position', ':email', ':phone');
+--delete an employee--
+DELETE FROM Employees
+WHERE EmployeeID = :employeeID
+--update an employee--
+UPDATE Employees
+SET Name = ':name', Position = ':position', Email = ':email', Phone = ':phone'
+WHERE EmployeeID = :employeeID;
+
+
+--Genre Queries--
+--view all genres--
+SELECT GenreID, GenreDescription
+FROM Genres;
+--insert a genre--
+INSERT INTO Genres (GenreID, GenreDescription)
+VALUES (':genreID', ':genreDescription');
+--delete a genre--
+DELETE FROM Genres
+WHERE GenreID = :genreID
+--update a genre--
+UPDATE Genres
+SET GenreDescription = ':genreDescription'
+WHERE GenreID = :genreID;
