@@ -38,14 +38,31 @@ FROM Authors;
 --insert an author--
 INSERT INTO Authors (Name, BirthDate, Nationality)
 VALUES (':name', ':birthDate', ':nationality');
---delete an author--
-DELETE FROM Authors
-WHERE AuthorID = :authorID;
 --update an author--
 UPDATE Authors
 SET Name = ':name', BirthDate = ':birthDate', Nationality = ':nationality'
 WHERE AuthorID = :authorID;
 
+--BooksOrdersLinked Queries
+--delete an author and any associated books
+START TRANSACTION;
+
+DELETE FROM Books
+WHERE BookID IN (
+    SELECT b.BookID
+    FROM Books b
+    JOIN BooksAuthorsLinked bal ON b.BookID = bal.BookID
+    GROUP BY b.BookID
+    HAVING COUNT(bal.AuthorID) = 1 AND MAX(bal.AuthorID) = [AuthorID_To_Delete]
+);
+
+DELETE FROM BooksAuthorsLinked
+WHERE AuthorID = [AuthorID_To_Delete];
+
+DELETE FROM Authors
+WHERE AuthorID = [AuthorID_To_Delete];
+
+COMMIT;
 
 
 --Order Queries
@@ -99,3 +116,4 @@ WHERE GenreID = :genreID
 UPDATE Genres
 SET GenreDescription = ':genreDescription'
 WHERE GenreID = :genreID;
+
