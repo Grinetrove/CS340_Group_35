@@ -1,3 +1,45 @@
+-- Group 35
+-- Joshua Gage & Graham Davis
+
+-- Displaying Books with Authors and Genre
+SELECT 
+    Books.Title,
+    Books.ISBN,
+    Authors.Name AS AuthorName
+FROM 
+    Books
+JOIN BooksGenresLinked ON Books.BookID = BooksGenresLinked.BookID
+JOIN Genres ON BooksGenresLinked.GenreID = Genres.GenreID
+JOIN BooksAuthorsLinked ON Books.BookID = BooksAuthorsLinked.BookID
+JOIN Authors ON BooksAuthorsLinked.AuthorID = Authors.AuthorID
+WHERE 
+    Genres.GenreDescription = ?; 
+
+
+-- Customer Facing Order Output Query
+SELECT 
+    Orders.OrderID, 
+    Members.Name AS MemberName, 
+    Employees.Name AS EmployeeName,
+    Orders.OrderDate
+FROM 
+    Orders
+JOIN Members ON Orders.MemberID = Members.MemberID
+JOIN Employees ON Orders.EmployeeID = Employees.EmployeeID;
+
+
+-- Display Books by Author's Query
+SELECT 
+    Books.Title, 
+    Authors.Name AS AuthorName
+FROM 
+    Books
+JOIN BooksAuthorsLinked ON Books.BookID = BooksAuthorsLinked.BookID
+JOIN Authors ON BooksAuthorsLinked.AuthorID = Authors.AuthorID
+WHERE 
+    Authors.Name = ?;  -- Replace ? with the author's name
+
+
 --Member Queries--
 --view all members--
 SELECT MemberID, Email, Name, Phone, Address, Standing, CurrentFines
