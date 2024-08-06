@@ -1,3 +1,11 @@
+-- Group 35
+-- Joshua Gage & Graham Davis
+
+
+
+SET FOREIGN_KEY_CHECKS=0;
+SET AUTOCOMMIT = 0;
+
 -- Members Table
 CREATE TABLE Members (
     MemberID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -167,3 +175,6 @@ VALUES
 ((SELECT BookID FROM Books WHERE Title='To Kill a Mockingbird'), 'FIC'),
 ((SELECT BookID FROM Books WHERE Title='Brave New World'), 'SCI'),
 ((SELECT BookID FROM Books WHERE Title='Pride and Prejudice'), 'ROM');
+
+SET FOREIGN_KEY_CHECKS=1;
+COMMIT;
