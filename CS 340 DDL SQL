@@ -52,8 +52,8 @@ CREATE TABLE BooksAuthorsLinked (
     BooksAuthorID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     BookID INT NOT NULL,
     AuthorID INT NOT NULL,
-    FOREIGN KEY (BookID) REFERENCES Books(BookID),
-    FOREIGN KEY (AuthorID) REFERENCES Authors(AuthorID)
+    FOREIGN KEY (BookID) REFERENCES Books(BookID) ON DELETE CASCADE,
+    FOREIGN KEY (AuthorID) REFERENCES Authors(AuthorID) ON DELETE SET NULL
 );
 
 -- Orders Table
@@ -62,8 +62,8 @@ CREATE TABLE Orders (
     MemberID INT NOT NULL,
     EmployeeID INT NOT NULL,
     OrderDate DATE NOT NULL,
-    FOREIGN KEY (MemberID) REFERENCES Members(MemberID),
-    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+    FOREIGN KEY (MemberID) REFERENCES Members(MemberID) ON DELETE CASCADE,
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID) ON DELETE CASCADE
 );
 
 -- OrderBooksLinked Table
@@ -75,8 +75,8 @@ CREATE TABLE OrderBooksLinked (
     DueDate DATE NOT NULL,
     ReturnedDate DATE,
     FineIncurred DECIMAL(10, 2),
-    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
-    FOREIGN KEY (BookID) REFERENCES Books(BookID)
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID) ON DELETE CASCADE,
+    FOREIGN KEY (BookID) REFERENCES Books(BookID) ON DELETE CASCADE
 );
 
 -- Genres Table
@@ -90,8 +90,8 @@ CREATE TABLE BooksGenresLinked (
     BooksGenreID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     BookID INT NOT NULL,
     GenreID VARCHAR(50),
-    FOREIGN KEY (BookID) REFERENCES Books(BookID),
-    FOREIGN KEY (GenreID) REFERENCES Genres(GenreID)
+    FOREIGN KEY (BookID) REFERENCES Books(BookID) ON DELETE CASCADE,
+    FOREIGN KEY (GenreID) REFERENCES Genres(GenreID) ON DELETE SET NULL
 );
 
 
