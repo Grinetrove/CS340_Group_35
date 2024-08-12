@@ -7,7 +7,7 @@ SET FOREIGN_KEY_CHECKS=0;
 SET AUTOCOMMIT = 0;
 
 -- Members Table
-CREATE TABLE Members (
+CREATE OR REPLACE TABLE Members (
     MemberID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     Email VARCHAR(255) NOT NULL,
     Name VARCHAR(255) NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE Members (
 );
 
 -- Employees Table
-CREATE TABLE Employees (
+CREATE OR REPLACE TABLEEmployees (
     EmployeeID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     Name VARCHAR(255) NOT NULL,
     Position VARCHAR(50) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE Employees (
 );
 
 -- Books Table
-CREATE TABLE Books (
+CREATE OR REPLACE TABLE Books (
     BookID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     Title VARCHAR(255) NOT NULL,
     ISBN VARCHAR(20) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE Books (
 );
 
 -- Authors Table
-CREATE TABLE Authors(
+CREATE OR REPLACE TABLE Authors(
     AuthorID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     Name VARCHAR(255) NOT NULL,
     BirthDate DATE,
@@ -48,7 +48,7 @@ CREATE TABLE Authors(
 );
 
 -- BooksAuthorsLinked Table
-CREATE TABLE BooksAuthorsLinked (
+CREATE OR REPLACE TABLE BooksAuthorsLinked (
     BooksAuthorID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     BookID INT NOT NULL,
     AuthorID INT NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE BooksAuthorsLinked (
 );
 
 -- Orders Table
-CREATE TABLE Orders (
+CREATE OR REPLACE TABLE Orders (
     OrderID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     MemberID INT NOT NULL,
     EmployeeID INT NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE Orders (
 );
 
 -- OrderBooksLinked Table
-CREATE TABLE OrderBooksLinked (
+CREATE OR REPLACE TABLE OrderBooksLinked (
     OrderBooksID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     OrderID INT NOT NULL,
     BookID INT NOT NULL,
@@ -80,13 +80,13 @@ CREATE TABLE OrderBooksLinked (
 );
 
 -- Genres Table
-CREATE TABLE Genres (
+CREATE OR REPLACE TABLE Genres (
     GenreID VARCHAR(50) NOT NULL PRIMARY KEY,
     GenreDescription VARCHAR(255)
 );
 
 -- BooksGenresLinked Table
-CREATE TABLE BooksGenresLinked (
+CREATE OR REPLACE TABLE BooksGenresLinked (
     BooksGenreID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     BookID INT NOT NULL,
     GenreID VARCHAR(50),
